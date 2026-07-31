@@ -3,23 +3,23 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>YAYA私厨-点菜单</title>
+<title>GAGA私厨-点菜单</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@500;700;900&family=Noto+Sans+SC:wght@400;500;600;700&family=JetBrains+Mono:wght@500;700&display=swap" rel="stylesheet">
 <style>
   :root{
-    --paper:#F3ECDD;
-    --paper-deep:#EAE0CB;
-    --ink:#2B211C;
-    --soy:#4A2E22;
-    --charsiu:#C1522A;
-    --charsiu-deep:#9E3F1E;
-    --scallion:#5B7A5D;
-    --broth-gold:#D9A441;
-    --card:#FFFDF6;
-    --line:rgba(43,33,28,0.12);
-    --shadow:0 10px 30px rgba(43,33,28,0.10);
-  }
+  --paper:#FBF5EA;
+  --paper-deep:#F3E8D6;
+  --ink:#4A3527;
+  --soy:#8A5A3E;
+  --charsiu:#DC8A5C;
+  --charsiu-deep:#C06E3F;
+  --scallion:#7D9B7E;
+  --broth-gold:#E8BE7A;
+  --card:#FFFDF8;
+  --line:rgba(74,53,39,0.12);
+  --shadow:0 10px 30px rgba(74,53,39,0.08);
+}
   *{box-sizing:border-box;}
   body{
     margin:0;
@@ -334,10 +334,10 @@
 <div class="phone">
 
   <header>
-    <div class="brand"><h1>YAYA厨房</h1><span>FAN·DA·ZI</span></div>
-    <p class="sub">来都来了 · 吃点好的</p>
+    <div class="brand"><h1>GAGA厨房</h1><span>FAN·DA·ZI</span></div>
+    <p class="sub">客官吃点啥</p>
     <div class="occasion-row">
-      <input class="occasion-input" id="occasionInput" placeholder="填个由头,比如「周六聚餐」" />
+      <input class="occasion-input" id="occasionInput" placeholder="国庆聚餐" />
     </div>
   </header>
 
@@ -362,7 +362,7 @@
     </div>
     <div class="sheet-items" id="sheetItems"></div>
     <div class="sheet-total"><span>合计</span><b id="sheetTotal">¥0</b></div>
-    <button class="confirm-btn" id="confirmBtn">生成点菜单 · 发给饭搭子</button>
+    <button class="confirm-btn" id="confirmBtn">生成点菜单 · 发给主厨</button>
   </div>
 
   <div class="toast" id="toast"></div>
@@ -537,7 +537,7 @@ document.getElementById('clearBtn').addEventListener('click', ()=>{
 document.getElementById('confirmBtn').addEventListener('click', ()=>{
   const {count} = cartSummary();
   if(count===0){ showToast('先选几道菜吧'); return; }
-  showToast('点菜单已生成,可截图发给饭搭子啦');
+  showToast('点菜单已生成,后厨已在备菜');
   setTimeout(closeSheet, 700);
 });
 
