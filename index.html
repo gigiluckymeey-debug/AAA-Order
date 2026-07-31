@@ -7,18 +7,18 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@500;700;900&family=Noto+Sans+SC:wght@400;500;600;700&family=JetBrains+Mono:wght@500;700&display=swap" rel="stylesheet">
 <style>
-  :root{
-  --paper:#FBF5EA;
-  --paper-deep:#F3E8D6;
-  --ink:#4A3527;
-  --soy:#8A5A3E;
-  --charsiu:#DC8A5C;
-  --charsiu-deep:#C06E3F;
-  --scallion:#7D9B7E;
-  --broth-gold:#E8BE7A;
-  --card:#FFFDF8;
-  --line:rgba(74,53,39,0.12);
-  --shadow:0 10px 30px rgba(74,53,39,0.08);
+ :root{
+  --paper:#FBF3F3;
+  --paper-deep:#F5E3E7;
+  --ink:#5C4655;
+  --soy:#B97C93;
+  --charsiu:#F0917E;
+  --charsiu-deep:#D9705E;
+  --scallion:#8FBFA0;
+  --broth-gold:#F0C36E;
+  --card:#FFFBFA;
+  --line:rgba(92,70,85,0.12);
+  --shadow:0 10px 30px rgba(92,70,85,0.08);
 }
   *{box-sizing:border-box;}
   body{
@@ -38,7 +38,7 @@
     max-width:100%;
     background:var(--paper);
     border-radius:34px;
-    box-shadow:0 30px 60px rgba(43,33,28,0.25);
+    box-shadow:0 30px 60px rgba(92,70,85,0.25);
     overflow:hidden;
     position:relative;
     border:8px solid var(--ink);
@@ -47,7 +47,7 @@
   /* ---------- Header ---------- */
   header{
     padding:22px 22px 16px;
-    background:linear-gradient(180deg, var(--soy) 0%, #3a2418 100%);
+    background:linear-gradient(180deg, var(--soy) 0%, #96637A 100%);
     color:var(--paper);
     position:relative;
     overflow:hidden;
@@ -115,7 +115,7 @@
     padding:8px 14px 12px;
     font-size:13.5px;
     font-weight:600;
-    color:rgba(43,33,28,0.45);
+    color:rgba(92,70,85,0.45);
     cursor:pointer;
     position:relative;
     white-space:nowrap;
@@ -144,7 +144,7 @@
   }
   .section-note{
     font-size:11px;
-    color:rgba(43,33,28,0.5);
+    color:rgba(92,70,85,0.5);
     margin:2px 2px 10px;
     line-height:1.5;
   }
@@ -189,7 +189,7 @@
   .tag.veg{background:rgba(91,122,93,0.14); color:var(--scallion);}
   .dish-desc{
     font-size:11.5px;
-    color:rgba(43,33,28,0.55);
+    color:rgba(92,70,85,0.55);
     margin-top:3px;
     line-height:1.4;
   }
@@ -202,7 +202,7 @@
     font-size:14.5px;
     color:var(--charsiu-deep);
   }
-  .price small{font-size:10px; font-weight:500; color:rgba(43,33,28,0.4); margin-left:2px;}
+  .price small{font-size:10px; font-weight:500; color:rgba(92,70,85,0.4); margin-left:2px;}
 
   .stepper{
     display:flex; align-items:center; gap:10px;
@@ -267,7 +267,7 @@
 
   /* ---------- Sheet ---------- */
   .overlay{
-    position:absolute; inset:0; background:rgba(43,33,28,0.45);
+    position:absolute; inset:0; background:rgba(92,70,85,0.45);
     opacity:0; pointer-events:none; transition:opacity .25s;
     z-index:30;
   }
@@ -303,7 +303,7 @@
     font-size:13px;
   }
   .sheet-row .n{font-weight:600;}
-  .sheet-row .p{font-family:"JetBrains Mono",monospace; color:rgba(43,33,28,0.6); font-size:11.5px;}
+  .sheet-row .p{font-family:"JetBrains Mono",monospace; color:rgba(92,70,85,0.6); font-size:11.5px;}
   .sheet-total{
     display:flex; justify-content:space-between; align-items:center;
     padding-top:10px; border-top:1.5px solid var(--ink);
@@ -318,7 +318,7 @@
   }
   .confirm-btn:active{background:var(--charsiu-deep);}
   .empty-note{
-    text-align:center; padding:30px 10px; color:rgba(43,33,28,0.45); font-size:13px;
+    text-align:center; padding:30px 10px; color:rgba(92,70,85,0.45); font-size:13px;
   }
 
   .toast{
@@ -427,7 +427,7 @@ function renderTabs(){
     const count = sec.items.reduce((a,i)=>a+(cart[i.id]||0),0);
     return `<div class="tab ${sec.cat===activeCat?'active':''}" data-cat="${sec.cat}">
       ${sec.cat}<span class="cnt">${count>0?('·'+count):''}</span>
-      <svg class="brush" viewBox="0 0 60 8" preserveAspectRatio="none"><path d="M2,5 Q15,1 30,4 T58,3" stroke="#C1522A" stroke-width="3.5" fill="none" stroke-linecap="round"/></svg>
+      <svg class="brush" viewBox="0 0 60 8" preserveAspectRatio="none"><path d="M2,5 Q15,1 30,4 T58,3" stroke="#D9705E" stroke-width="3.5" fill="none" stroke-linecap="round"/></svg>
     </div>`;
   }).join('');
   tabsEl.querySelectorAll('.tab').forEach(t=>{
