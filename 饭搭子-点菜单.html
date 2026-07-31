@@ -1,0 +1,549 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>饭搭子 · 老友饭局点菜单</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@500;700;900&family=Noto+Sans+SC:wght@400;500;600;700&family=JetBrains+Mono:wght@500;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --paper:#F3ECDD;
+    --paper-deep:#EAE0CB;
+    --ink:#2B211C;
+    --soy:#4A2E22;
+    --charsiu:#C1522A;
+    --charsiu-deep:#9E3F1E;
+    --scallion:#5B7A5D;
+    --broth-gold:#D9A441;
+    --card:#FFFDF6;
+    --line:rgba(43,33,28,0.12);
+    --shadow:0 10px 30px rgba(43,33,28,0.10);
+  }
+  *{box-sizing:border-box;}
+  body{
+    margin:0;
+    font-family:"Noto Sans SC",sans-serif;
+    background:
+      radial-gradient(circle at 15% 8%, rgba(193,82,42,0.06), transparent 40%),
+      radial-gradient(circle at 85% 92%, rgba(91,122,93,0.07), transparent 45%),
+      var(--paper);
+    color:var(--ink);
+    display:flex;
+    justify-content:center;
+    padding:28px 12px;
+  }
+  .phone{
+    width:390px;
+    max-width:100%;
+    background:var(--paper);
+    border-radius:34px;
+    box-shadow:0 30px 60px rgba(43,33,28,0.25);
+    overflow:hidden;
+    position:relative;
+    border:8px solid var(--ink);
+  }
+
+  /* ---------- Header ---------- */
+  header{
+    padding:22px 22px 16px;
+    background:linear-gradient(180deg, var(--soy) 0%, #3a2418 100%);
+    color:var(--paper);
+    position:relative;
+    overflow:hidden;
+  }
+  header::after{
+    content:"";
+    position:absolute; right:-30px; top:-30px;
+    width:140px;height:140px;border-radius:50%;
+    background:radial-gradient(circle, rgba(217,164,65,0.25), transparent 70%);
+  }
+  .brand{
+    display:flex; align-items:baseline; gap:8px;
+  }
+  .brand h1{
+    font-family:"Noto Serif SC",serif;
+    font-weight:900;
+    font-size:30px;
+    margin:0;
+    letter-spacing:2px;
+  }
+  .brand span{
+    font-size:12px;
+    opacity:0.75;
+    letter-spacing:3px;
+  }
+  .sub{
+    margin:6px 0 0;
+    font-size:12.5px;
+    opacity:0.82;
+    letter-spacing:0.5px;
+  }
+  .occasion-row{
+    margin-top:14px;
+    display:flex;
+    gap:8px;
+  }
+  .occasion-input{
+    flex:1;
+    background:rgba(255,255,255,0.08);
+    border:1px solid rgba(255,255,255,0.22);
+    border-radius:10px;
+    padding:9px 12px;
+    color:var(--paper);
+    font-size:12.5px;
+    font-family:"Noto Sans SC",sans-serif;
+  }
+  .occasion-input::placeholder{color:rgba(243,236,221,0.55);}
+  .occasion-input:focus{outline:none; border-color:var(--broth-gold);}
+
+  /* ---------- Category tabs ---------- */
+  .tabs{
+    display:flex;
+    gap:4px;
+    padding:14px 14px 0;
+    overflow-x:auto;
+    background:var(--paper);
+    position:sticky;
+    top:0;
+    z-index:5;
+    scrollbar-width:none;
+  }
+  .tabs::-webkit-scrollbar{display:none;}
+  .tab{
+    flex:0 0 auto;
+    padding:8px 14px 12px;
+    font-size:13.5px;
+    font-weight:600;
+    color:rgba(43,33,28,0.45);
+    cursor:pointer;
+    position:relative;
+    white-space:nowrap;
+    transition:color .2s;
+  }
+  .tab .cnt{
+    font-family:"JetBrains Mono",monospace;
+    font-size:10px;
+    margin-left:3px;
+    color:var(--charsiu);
+    opacity:0;
+    transition:opacity .2s;
+  }
+  .tab.active{color:var(--ink);}
+  .tab.active .cnt{opacity:1;}
+  .tab .brush{
+    position:absolute; left:8px; right:8px; bottom:2px; height:6px;
+    opacity:0; transform:scaleX(0.6); transform-origin:left;
+    transition:all .25s ease;
+  }
+  .tab.active .brush{opacity:1; transform:scaleX(1);}
+
+  /* ---------- List ---------- */
+  .list{
+    padding:14px 14px 120px;
+  }
+  .section-note{
+    font-size:11px;
+    color:rgba(43,33,28,0.5);
+    margin:2px 2px 10px;
+    line-height:1.5;
+  }
+  .dish{
+    background:var(--card);
+    border-radius:16px;
+    padding:14px;
+    display:flex;
+    gap:12px;
+    margin-bottom:10px;
+    box-shadow:var(--shadow);
+    border:1px solid var(--line);
+  }
+  .dish-icon{
+    flex:0 0 52px;
+    height:52px;
+    border-radius:12px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    background:var(--paper-deep);
+  }
+  .dish-body{flex:1; min-width:0;}
+  .dish-top{
+    display:flex; justify-content:space-between; align-items:flex-start; gap:8px;
+  }
+  .dish-name{
+    font-size:15px;
+    font-weight:700;
+    color:var(--ink);
+  }
+  .tag{
+    display:inline-block;
+    font-size:10px;
+    font-weight:600;
+    padding:1px 6px;
+    border-radius:5px;
+    margin-left:6px;
+    vertical-align:1px;
+  }
+  .tag.hot{background:rgba(193,82,42,0.12); color:var(--charsiu-deep);}
+  .tag.veg{background:rgba(91,122,93,0.14); color:var(--scallion);}
+  .dish-desc{
+    font-size:11.5px;
+    color:rgba(43,33,28,0.55);
+    margin-top:3px;
+    line-height:1.4;
+  }
+  .dish-bottom{
+    display:flex; justify-content:space-between; align-items:center; margin-top:10px;
+  }
+  .price{
+    font-family:"JetBrains Mono",monospace;
+    font-weight:700;
+    font-size:14.5px;
+    color:var(--charsiu-deep);
+  }
+  .price small{font-size:10px; font-weight:500; color:rgba(43,33,28,0.4); margin-left:2px;}
+
+  .stepper{
+    display:flex; align-items:center; gap:10px;
+  }
+  .stepper button{
+    width:24px; height:24px;
+    border-radius:50%;
+    border:1.5px solid var(--charsiu);
+    background:var(--card);
+    color:var(--charsiu);
+    font-size:15px;
+    line-height:1;
+    display:flex; align-items:center; justify-content:center;
+    cursor:pointer;
+    transition:transform .1s;
+  }
+  .stepper button:active{transform:scale(0.88);}
+  .stepper button.add{background:var(--charsiu); color:#fff; border-color:var(--charsiu);}
+  .stepper .qty{
+    min-width:14px; text-align:center;
+    font-family:"JetBrains Mono",monospace;
+    font-weight:700; font-size:13.5px;
+  }
+  .stepper.zero .minus, .stepper.zero .qty{display:none;}
+
+  /* ---------- Cart bar ---------- */
+  .cartbar{
+    position:absolute; left:14px; right:14px; bottom:14px;
+    background:var(--ink);
+    border-radius:18px;
+    padding:12px 14px 12px 16px;
+    display:flex; align-items:center; justify-content:space-between;
+    box-shadow:0 14px 30px rgba(0,0,0,0.35);
+    z-index:20;
+    cursor:pointer;
+    transition:transform .15s;
+  }
+  .cartbar:active{transform:scale(0.98);}
+  .cartbar.empty{opacity:0.55; pointer-events:none;}
+  .cart-left{display:flex; align-items:center; gap:10px;}
+  .cart-badge{
+    width:34px; height:34px; border-radius:50%;
+    background:var(--charsiu);
+    display:flex; align-items:center; justify-content:center;
+    color:#fff; font-weight:800; font-size:13px;
+    font-family:"JetBrains Mono",monospace;
+    position:relative;
+  }
+  .cart-text{color:var(--paper); font-size:12.5px; line-height:1.3;}
+  .cart-text b{
+    font-family:"JetBrains Mono",monospace;
+    font-size:16px; color:var(--broth-gold); display:block;
+  }
+  .cart-cta{
+    background:var(--broth-gold);
+    color:var(--ink);
+    font-weight:800;
+    font-size:13px;
+    padding:9px 16px;
+    border-radius:12px;
+  }
+
+  /* ---------- Sheet ---------- */
+  .overlay{
+    position:absolute; inset:0; background:rgba(43,33,28,0.45);
+    opacity:0; pointer-events:none; transition:opacity .25s;
+    z-index:30;
+  }
+  .overlay.show{opacity:1; pointer-events:auto;}
+  .sheet{
+    position:absolute; left:0; right:0; bottom:0;
+    background:var(--paper);
+    border-radius:24px 24px 0 0;
+    padding:18px 18px 20px;
+    transform:translateY(105%);
+    transition:transform .3s cubic-bezier(.2,.9,.3,1);
+    z-index:31;
+    max-height:78%;
+    display:flex;
+    flex-direction:column;
+  }
+  .sheet.show{transform:translateY(0);}
+  .sheet-handle{
+    width:36px; height:4px; background:var(--line); border-radius:2px;
+    margin:0 auto 12px;
+  }
+  .sheet-head{
+    display:flex; justify-content:space-between; align-items:center; margin-bottom:10px;
+  }
+  .sheet-head h3{
+    font-family:"Noto Serif SC",serif; font-size:18px; margin:0;
+  }
+  .sheet-clear{font-size:12px; color:var(--charsiu-deep); cursor:pointer;}
+  .sheet-items{overflow-y:auto; flex:1; margin:4px 0 12px;}
+  .sheet-row{
+    display:flex; justify-content:space-between; align-items:center;
+    padding:9px 0; border-bottom:1px dashed var(--line);
+    font-size:13px;
+  }
+  .sheet-row .n{font-weight:600;}
+  .sheet-row .p{font-family:"JetBrains Mono",monospace; color:rgba(43,33,28,0.6); font-size:11.5px;}
+  .sheet-total{
+    display:flex; justify-content:space-between; align-items:center;
+    padding-top:10px; border-top:1.5px solid var(--ink);
+    font-weight:800; font-size:15px; margin-bottom:14px;
+  }
+  .sheet-total b{font-family:"JetBrains Mono",monospace; color:var(--charsiu-deep); font-size:19px;}
+  .confirm-btn{
+    width:100%; border:none; background:var(--charsiu);
+    color:#fff; font-weight:800; font-size:14.5px;
+    padding:13px; border-radius:14px; cursor:pointer;
+    letter-spacing:1px;
+  }
+  .confirm-btn:active{background:var(--charsiu-deep);}
+  .empty-note{
+    text-align:center; padding:30px 10px; color:rgba(43,33,28,0.45); font-size:13px;
+  }
+
+  .toast{
+    position:absolute; left:50%; top:70px; transform:translate(-50%,-10px);
+    background:var(--ink); color:var(--paper);
+    padding:9px 18px; border-radius:20px; font-size:12.5px;
+    opacity:0; transition:all .25s; z-index:50; white-space:nowrap;
+  }
+  .toast.show{opacity:1; transform:translate(-50%,0);}
+</style>
+</head>
+<body>
+<div class="phone">
+
+  <header>
+    <div class="brand"><h1>饭搭子</h1><span>FAN·DA·ZI</span></div>
+    <p class="sub">老友饭局 · 广式家常点菜单</p>
+    <div class="occasion-row">
+      <input class="occasion-input" id="occasionInput" placeholder="填个由头,比如「周六聚餐」" />
+    </div>
+  </header>
+
+  <nav class="tabs" id="tabs"></nav>
+
+  <main class="list" id="list"></main>
+
+  <div class="cartbar empty" id="cartbar">
+    <div class="cart-left">
+      <div class="cart-badge" id="cartCount">0</div>
+      <div class="cart-text">已选菜品<b id="cartTotal">¥0</b></div>
+    </div>
+    <div class="cart-cta">看点菜单 →</div>
+  </div>
+
+  <div class="overlay" id="overlay"></div>
+  <div class="sheet" id="sheet">
+    <div class="sheet-handle"></div>
+    <div class="sheet-head">
+      <h3 id="sheetTitle">今日点菜单</h3>
+      <span class="sheet-clear" id="clearBtn">清空</span>
+    </div>
+    <div class="sheet-items" id="sheetItems"></div>
+    <div class="sheet-total"><span>合计</span><b id="sheetTotal">¥0</b></div>
+    <button class="confirm-btn" id="confirmBtn">生成点菜单 · 发给饭搭子</button>
+  </div>
+
+  <div class="toast" id="toast"></div>
+</div>
+
+<script>
+const DATA = [
+  { cat:"头盘", note:"开饭前垫垫肚子的凉爽小食", items:[
+    { id:"c1", name:"白切鸡", desc:"三黄鸡起肉,蘸姜葱油", price:58, icon:"🍗", tag:"招牌" },
+    { id:"c2", name:"凉拌海蜇头", desc:"爽脆开胃,配蒜蓉香醋", price:32, icon:"🥗" },
+    { id:"c3", name:"咸柠檬七喜", desc:"咸柠檬打底,微咸回甘", price:16, icon:"🍋" },
+  ]},
+  { cat:"靓汤", note:"广式老火汤,煲足两小时,建议第一时间下单", items:[
+    { id:"s1", name:"花胶炖鸡汤", desc:"花胶、栗子、红枣同炖", price:68, icon:"🍲", tag:"招牌" },
+    { id:"s2", name:"眉豆花生猪骨汤", desc:"健脾祛湿,家常味道", price:42, icon:"🍲" },
+    { id:"s3", name:"冬瓜薏米排骨汤", desc:"清润解腻,夏天首选", price:38, icon:"🍲" },
+  ]},
+  { cat:"主菜", note:"荤菜担当,建议按人数点2-3道", items:[
+    { id:"m1", name:"豉汁蒸排骨", desc:"豆豉香浓,肉质嫩滑", price:48, icon:"🥩" },
+    { id:"m2", name:"清蒸多宝鱼", desc:"整条现蒸,葱丝豉油", price:88, icon:"🐟", tag:"招牌" },
+    { id:"m3", name:"豉椒炒牛肉", desc:"镬气十足,牛肉嫩", price:56, icon:"🥘" },
+    { id:"m4", name:"梅菜扣肉", desc:"肥而不腻,梅菜吸油香", price:52, icon:"🍖" },
+    { id:"m5", name:"白灼虾", desc:"原汁原味,蘸酱油碟", price:68, icon:"🦐" },
+  ]},
+  { cat:"时蔬", note:"清清淡淡,解荤菜的腻", items:[
+    { id:"v1", name:"蒜蓉炒油麦菜", desc:"清脆爽口", price:22, icon:"🥬", tag:"素" },
+    { id:"v2", name:"干煸四季豆", desc:"微辣下饭", price:26, icon:"🫛", tag:"素" },
+    { id:"v3", name:"清炒芥兰", desc:"广式经典,蚝油提鲜", price:24, icon:"🥦", tag:"素" },
+  ]},
+  { cat:"主食", note:"吃到最后,总要来点主食收尾", items:[
+    { id:"f1", name:"腊味煲仔饭", desc:"腊肠腊肉,饭焦香脆(每位)", price:38, icon:"🍚", tag:"招牌" },
+    { id:"f2", name:"生滚艇仔粥", desc:"料足绵密", price:28, icon:"🥣" },
+    { id:"f3", name:"白米饭", desc:"每位一碗", price:3, icon:"🍙" },
+  ]},
+  { cat:"甜品", note:"饭后甜品,人手一份不用抢", items:[
+    { id:"d1", name:"双皮奶", desc:"顺德手工做法", price:18, icon:"🍮" },
+    { id:"d2", name:"红豆沙", desc:"绵软起沙,配陈皮", price:16, icon:"🍥" },
+    { id:"d3", name:"杨枝甘露", desc:"芒果西柚配西米", price:22, icon:"🥭" },
+  ]},
+];
+
+const cart = {}; // id -> qty
+let activeCat = DATA[0].cat;
+
+const tabsEl = document.getElementById('tabs');
+const listEl = document.getElementById('list');
+const cartbar = document.getElementById('cartbar');
+const cartCountEl = document.getElementById('cartCount');
+const cartTotalEl = document.getElementById('cartTotal');
+const overlay = document.getElementById('overlay');
+const sheet = document.getElementById('sheet');
+const sheetItems = document.getElementById('sheetItems');
+const sheetTotal = document.getElementById('sheetTotal');
+const toast = document.getElementById('toast');
+
+function findItem(id){
+  for(const sec of DATA){ const f = sec.items.find(i=>i.id===id); if(f) return f; }
+}
+
+function renderTabs(){
+  tabsEl.innerHTML = DATA.map(sec=>{
+    const count = sec.items.reduce((a,i)=>a+(cart[i.id]||0),0);
+    return `<div class="tab ${sec.cat===activeCat?'active':''}" data-cat="${sec.cat}">
+      ${sec.cat}<span class="cnt">${count>0?('·'+count):''}</span>
+      <svg class="brush" viewBox="0 0 60 8" preserveAspectRatio="none"><path d="M2,5 Q15,1 30,4 T58,3" stroke="#C1522A" stroke-width="3.5" fill="none" stroke-linecap="round"/></svg>
+    </div>`;
+  }).join('');
+  tabsEl.querySelectorAll('.tab').forEach(t=>{
+    t.addEventListener('click', ()=>{ activeCat = t.dataset.cat; renderTabs(); renderList(); document.getElementById(sectionIdFor(activeCat)).scrollIntoView({behavior:'smooth', block:'start'}); });
+  });
+}
+
+function sectionIdFor(cat){ return 'sec-'+cat; }
+
+function renderList(){
+  listEl.innerHTML = DATA.map(sec=>`
+    <div id="${sectionIdFor(sec.cat)}">
+      <p class="section-note"><strong style="color:var(--ink)">${sec.cat}</strong> · ${sec.note}</p>
+      ${sec.items.map(i=>{
+        const qty = cart[i.id]||0;
+        return `<div class="dish">
+          <div class="dish-icon">${i.icon}</div>
+          <div class="dish-body">
+            <div class="dish-top">
+              <div class="dish-name">${i.name}${i.tag?`<span class="tag ${i.tag==='素'?'veg':'hot'}">${i.tag}</span>`:''}</div>
+            </div>
+            <div class="dish-desc">${i.desc}</div>
+            <div class="dish-bottom">
+              <div class="price">¥${i.price}</div>
+              <div class="stepper ${qty===0?'zero':''}" data-id="${i.id}">
+                <button class="minus">−</button>
+                <span class="qty">${qty}</span>
+                <button class="add">+</button>
+              </div>
+            </div>
+          </div>
+        </div>`;
+      }).join('')}
+    </div>
+  `).join('');
+
+  listEl.querySelectorAll('.stepper').forEach(st=>{
+    const id = st.dataset.id;
+    st.querySelector('.add').addEventListener('click', ()=>{
+      cart[id] = (cart[id]||0)+1;
+      afterCartChange(findItem(id).name+' 已加入');
+    });
+    st.querySelector('.minus').addEventListener('click', ()=>{
+      if(cart[id]>0){ cart[id]--; if(cart[id]===0) delete cart[id]; afterCartChange(); }
+    });
+  });
+}
+
+function cartSummary(){
+  let count=0, total=0;
+  for(const id in cart){ const it=findItem(id); count+=cart[id]; total+=cart[id]*it.price; }
+  return {count, total};
+}
+
+function afterCartChange(msg){
+  renderTabs();
+  renderList();
+  updateCartBar();
+  if(msg) showToast(msg);
+}
+
+function updateCartBar(){
+  const {count, total} = cartSummary();
+  cartCountEl.textContent = count;
+  cartTotalEl.textContent = '¥'+total;
+  cartbar.classList.toggle('empty', count===0);
+}
+
+function showToast(msg){
+  toast.textContent = msg;
+  toast.classList.add('show');
+  clearTimeout(showToast._t);
+  showToast._t = setTimeout(()=>toast.classList.remove('show'), 1400);
+}
+
+function openSheet(){
+  const {count, total} = cartSummary();
+  const occasion = document.getElementById('occasionInput').value.trim();
+  document.getElementById('sheetTitle').textContent = occasion ? occasion+' · 点菜单' : '今日点菜单';
+  if(count===0){
+    sheetItems.innerHTML = `<div class="empty-note">还没点菜呢,回去挑几道喜欢的吧 👆</div>`;
+  } else {
+    sheetItems.innerHTML = Object.keys(cart).map(id=>{
+      const it = findItem(id);
+      return `<div class="sheet-row">
+        <span class="n">${it.name} × ${cart[id]}</span>
+        <span class="p">¥${it.price*cart[id]}</span>
+      </div>`;
+    }).join('');
+  }
+  sheetTotal.textContent = '¥'+total;
+  overlay.classList.add('show');
+  sheet.classList.add('show');
+}
+function closeSheet(){
+  overlay.classList.remove('show');
+  sheet.classList.remove('show');
+}
+
+cartbar.addEventListener('click', openSheet);
+overlay.addEventListener('click', closeSheet);
+document.getElementById('clearBtn').addEventListener('click', ()=>{
+  for(const k in cart) delete cart[k];
+  afterCartChange('已清空点菜单');
+  closeSheet();
+});
+document.getElementById('confirmBtn').addEventListener('click', ()=>{
+  const {count} = cartSummary();
+  if(count===0){ showToast('先选几道菜吧'); return; }
+  showToast('点菜单已生成,可截图发给饭搭子啦');
+  setTimeout(closeSheet, 700);
+});
+
+renderTabs();
+renderList();
+updateCartBar();
+</script>
+</body>
+</html>
