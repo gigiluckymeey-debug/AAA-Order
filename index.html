@@ -167,6 +167,7 @@
     justify-content:center;
     background:var(--paper-deep);
   }
+ .dish-icon img{ width:100%; height:100%; object-fit:cover; border-radius:12px; }
   .dish-body{flex:1; min-width:0;}
   .dish-top{
     display:flex; justify-content:space-between; align-items:flex-start; gap:8px;
@@ -444,7 +445,7 @@ function renderList(){
       ${sec.items.map(i=>{
         const qty = cart[i.id]||0;
         return `<div class="dish">
-          <div class="dish-icon">${i.icon}</div>
+          <div class="dish-icon">${i.img ? `<img src="${i.img}" alt="${i.name}">` : i.icon}</div>
           <div class="dish-body">
             <div class="dish-top">
               <div class="dish-name">${i.name}${i.tag?`<span class="tag ${i.tag==='素'?'veg':'hot'}">${i.tag}</span>`:''}</div>
