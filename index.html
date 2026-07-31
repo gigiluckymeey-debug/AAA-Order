@@ -329,6 +329,48 @@
     opacity:0; transition:all .25s; z-index:50; white-space:nowrap;
   }
   .toast.show{opacity:1; transform:translate(-50%,0);}
+ .result-screen{
+  position:absolute; inset:0;
+  background:var(--paper);
+  display:flex; flex-direction:column; align-items:center; justify-content:center;
+  gap:10px;
+  z-index:60;
+  opacity:0; pointer-events:none;
+  transition:opacity .3s;
+  padding:30px;
+  text-align:center;
+}
+.result-screen.show{opacity:1; pointer-events:auto;}
+.result-label{font-size:14px; color:rgba(92,70,85,0.55); letter-spacing:2px;}
+.result-code{
+  font-family:"JetBrains Mono",monospace;
+  font-weight:800;
+  font-size:60px;
+  color:var(--ink);
+  letter-spacing:4px;
+}
+.result-title{
+  font-family:"Noto Serif SC",serif;
+  font-weight:700;
+  font-size:20px;
+  color:var(--ink);
+  margin-top:6px;
+}
+.result-sub{
+  font-size:13px;
+  color:rgba(92,70,85,0.6);
+}
+.result-close{
+  margin-top:16px;
+  background:var(--charsiu);
+  color:#fff;
+  border:none;
+  font-weight:700;
+  font-size:14px;
+  padding:12px 30px;
+  border-radius:14px;
+  cursor:pointer;
+}
 </style>
 </head>
 <body>
@@ -367,6 +409,12 @@
   </div>
 
   <div class="toast" id="toast"></div>
+ <div class="result-screen" id="resultScreen">
+  <div class="result-label">取餐码</div>
+  <div class="result-code" id="resultCode">1000</div>
+  <div class="result-title">恭喜您,已成功下单!</div>
+  <div class="result-sub">分享给饭搭子,喊TA一起来吃饭吧~</div>
+  <button class="result-close" id="resultClose">好的</button>
 </div>
 
 <script>
@@ -533,10 +581,15 @@ document.getElementById('clearBtn').addEventListener('click', ()=>{
 document.getElementById('confirmBtn').addEventListener('click', ()=>{
   const {count} = cartSummary();
   if(count===0){ showToast('先选几道菜吧'); return; }
-  showToast('点菜单已生成,后厨已在备菜');
-  setTimeout(closeSheet, 700);
+  const code = Math.floor(1000 + Math.random()*9000);
+  document.getElementById('resultCode').textContent = code;
+  closeSheet();
+  document.getElementById('resultScreen').classList.add('show');
 });
-
+document.getElementById('resultClose').addEventListener('click', ()=>{
+  document.getElementById('resultScreen').classList.remove('show');
+});
+ 
 renderTabs();
 renderList();
 updateCartBar();
